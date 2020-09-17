@@ -40,6 +40,7 @@ public class SalesTaxUtil {
 
     public static double round(double number, double nearestFactor) {
         return new BigDecimal(Math.ceil(number * nearestFactor) / nearestFactor)
-                .setScale(2, RoundingMode.HALF_UP).doubleValue();
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 }
