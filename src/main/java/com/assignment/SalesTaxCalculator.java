@@ -3,6 +3,7 @@ package com.assignment;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,13 +22,25 @@ public class SalesTaxCalculator {
         return shoppingBasket.toString();
     }
 
-    public static List<String> readInput(String inputFile) throws Exception {
-        return Files.readAllLines(Path.of(inputFile), StandardCharsets.UTF_8);
+    /**
+     * Read item lines from the provided input file
+     * @param inputFile path of input file
+     * @return strings of items
+     * @throws Exception
+     */
+    private static List<String> readInput(String inputFile) throws Exception {
+        List<String> itemStrings = Files.readAllLines(Path.of(inputFile), StandardCharsets.UTF_8);
+        if(!itemStrings.stream().allMatch(ItemParser::matches)) {
+            throw new IllegalArgumentException(
+                    "Input item description should be in the format: {quantity} {item_name} at {price}\n" +
+                            "Ex: 1 book at 12.49");
+        }
+
+        return itemStrings;
     }
 
-    public static List<Item> getItems(List<String> itemsDescriptions) {
+    private static List<Item> getItems(List<String> itemsDescriptions) {
         return itemsDescriptions.stream()
-                .filter(ItemParser::matches)
                 .map(ItemParser::parseItem)
                 .collect(Collectors.toList());
     }
