@@ -1,6 +1,7 @@
 package com.assignment;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +24,9 @@ public class ShoppingBasket {
     public double getTotalPrice() {
         return items.stream()
                 .reduce(BigDecimal.ZERO, (partialResult, item) -> partialResult.add(new BigDecimal(item.getTotalPrice())),
-                        BigDecimal::add).doubleValue();
+                        BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
     @Override

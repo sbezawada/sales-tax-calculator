@@ -1,6 +1,7 @@
 package com.assignment;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -16,6 +17,8 @@ public class Item {
     private double price;
     private boolean exempt;
     private boolean imported;
+
+    private Function<BigDecimal, BigDecimal>[] taxes;
 
     public String getName() {
         return name;
@@ -46,18 +49,18 @@ public class Item {
     }
 
     /**
-     * Initialize with the item name and it's price
+     * Initialize an item with it's name and price
      *
      * @param name  of the item
-     * @param price it's price
+     * @param price of the item
      */
     public Item(String name, double price) {
+        if(name == null || name.length() == 0 || price <= 0.0) {
+            throw new IllegalArgumentException("Name and/or price is missing");
+        }
         this.name = name;
         this.price = price;
     }
-
-
-    private Function<BigDecimal, BigDecimal>[] taxes;
 
     /**
      * List of taxes that would be applied on this item.
@@ -85,24 +88,26 @@ public class Item {
      * @return the item price + sales tax
      */
     public double getTotalPrice() {
-        return new BigDecimal(price).add(new BigDecimal(getSalesTax())).doubleValue();
+        return (new BigDecimal(price).add(new BigDecimal(getSalesTax())))
+                .setScale(2, RoundingMode.HALF_EVEN)
+                .doubleValue();
     }
 
     /**
      * Print the item details in the following format:
-     * 1 {item_name} : {item_price}
+     * {quantity} {item_name} : {item_price}
      *
      * @return a string in the above format
      */
     @Override
     public String toString() {
-        return String.format("1 %s : %.2f", name, getTotalPrice());
+        return String.format("1 %s: %.2f", name, getTotalPrice());
     }
 
     /**
      * Object comparison for equality based on the item name and the price
      *
-     * @param o
+     * @param o object to compare for equality
      * @return if the objects being compared to are equal
      */
     @Override

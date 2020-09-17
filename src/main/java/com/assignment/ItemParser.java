@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  */
 public class ItemParser {
 
-    //
+    // Format of the input tem string: {quantity} {item_name} at {price}
     private static final String ITEM_INPUT_REGEX = "(\\d+)\\s((\\w+\\s)+)at\\s(\\d+.\\d+)";
 
     public static Item parseItem(String itemDescription) {

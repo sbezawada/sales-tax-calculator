@@ -9,11 +9,14 @@ import java.util.stream.Collectors;
 public class SalesTaxCalculator {
 
     public static void main(String[] args) throws Exception {
-        System.out.println(calculateSalesTax());
+        if(args.length == 0) {
+            System.out.println("Proper Usage: {input file path}");
+            System.exit(0);
+        }
+        System.out.println(calculateSalesTax(args[0]));
     }
 
-    public static String calculateSalesTax() throws Exception {
-        var inputFile = "/Users/sbezawada/Downloads/input_1.txt";
+    public static String calculateSalesTax(String inputFile) throws Exception {
         var shoppingBasket = populateShoppingBasket(getItems(readInput(inputFile)));
         return shoppingBasket.toString();
     }
