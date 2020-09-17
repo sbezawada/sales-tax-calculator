@@ -50,8 +50,8 @@ Output 3:
 - Sales Taxes: 6.70
 - Total: 74.68
 
-INSTRUCTIONS FOR RUNNING
-========================
+### INSTRUCTIONS FOR RUNNING
+============================
 Provide a program argument to point to the input file containing 
 item details as shown above.
 
